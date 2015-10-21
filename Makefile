@@ -1,2 +1,5 @@
 index.html: talk.md
-	python refreeze/freee.py
+	python refreeze/freeze.py
+
+test:
+	nosetests -vx --with-doctest --doctest-extension=md talk.md
