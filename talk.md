@@ -25,8 +25,8 @@ layout: false
 ```
 >>> li = range(3)
 >>> for i in li:
-...     print i,
-0 1 2
+...     print(i, end=" ")
+0 1 2 
 
 ```
 **Note**
@@ -43,8 +43,8 @@ layout: false
 
 ```
 >>> dict = {'a':1, 'b':2}
->>> for k in dict:
-...     print k, dict[k]
+>>> for k in dict: #doctest: +SKIP
+...     print(k, dict[k])
 a 1
 b 2
 
@@ -56,7 +56,7 @@ b 2
 ```
 >>> str = 'abc'
 >>> for c in str:
-...     print c
+...     print(c)
 a
 b
 c
@@ -67,12 +67,20 @@ c
 #### File objects  support iteration
 
 
-```
+<!--
 >>> import subprocess
->>> subprocess.call("/bin/echo 'one\ntwo\nthree' > 123", shell=True)
-0
+>>> n = subprocess.call("/bin/echo 'one\ntwo\nthree' > 123", shell=True)
+
+-->
+
+    #123
+    one
+    two
+    three
+
+```
 >>> for row in open('123'):
-...     print row,
+...     print(row, end="")
 one
 two
 three
@@ -83,7 +91,8 @@ three
 ### Consider the list
 
 ```
->>> print li
+>>> li = [0, 1, 2]
+>>> print(li)
 [0, 1, 2]
 
 ```
@@ -93,23 +102,23 @@ three
 
 ```
 >>> li_iter = li.__iter__()
->>> print type(li_iter)
-<type 'listiterator'>
+>>> print(type(li_iter))
+<class 'list_iterator'>
 
 ```
-* `__iter__` returns an object with a `next` method
+* `__iter__` returns an object with a `__next__` method
 
 ```
->>> print li_iter.next()
+>>> print(li_iter.__next__())
 0
->>> print li_iter.next()
+>>> print(li_iter.__next__())
 1
->>> print li_iter.next()
+>>> print(li_iter.__next__())
 2
->>> print li_iter.next()
+>>> print(li_iter.__next__())
 Traceback (most recent call last):
   File "iter.py", line 20, in <module>
-    print li_iter.next()
+    print(li_iter.next())
 StopIteration
 
 ```
@@ -131,15 +140,15 @@ StopIteration
 ```
 >>> class Counter(object):
 ...     def __init__(self, size):
-...         print "__init__:", size
+...         print("__init__:", size)
 ...         self.size = size
 ...         self.start = 0
 ...
 ...     def __iter__(self):
-...         print "__iter__:", self.size
+...         print("__iter__:", self.size)
 ...         return self
 ...
-...     def next(self):
+...     def __next__(self):
 ...         if self.start < self.size:
 ...             self.start = self.start + 1
 ...             return self.start
@@ -150,9 +159,9 @@ StopIteration
 >>> c = Counter(3)
 __init__: 3
 >>> for num in c:
-...     print num,
+...     print(num, end=" ")
 __iter__: 3
-1 2 3
+1 2 3 
 
 ```
 
@@ -171,15 +180,15 @@ __iter__: 3
 ```
 >>> def f(n):
 ...    return n
->>> print type(f), type(f(1))
-<type 'function'> <type 'int'>
+>>> print(type(f), type(f(1)))
+<class 'function'> <class 'int'>
 
 ```
 ```
 >>> def g(n):
 ...    yield n
->>> print type(g), type(g(1))
-<type 'function'> <type 'generator'>
+>>> print(type(g), type(g(1)))
+<class 'function'> <class 'generator'>
 
 ```
 
@@ -189,18 +198,17 @@ __iter__: 3
 
 ```
 >>> def g(n):
-...     print 'enter g with',n
+...     print('enter g with',n)
 ...     yield n
-...     print 'after yield'
+...     print('after yield')
 
 ```
 ```
 >>> g2=g(2)
->>> g2.next()
+>>> g2.__next__()
 enter g with 2
 2
->>> g2.next() #doctest: +SKIP
-after yield
+>>> g2.__next__() #doctest: +SKIP
 Traceback (most recent call last):
 ...
 StopIteration
@@ -217,13 +225,13 @@ StopIteration
 
 ```
 >>> def g(n):
-...     print 'enter g with ',n
+...     print('enter g with ',n)
 ...     i=0
 ...     while i < n:
 ...         yield i
-...         print 'after yield'
+...         print('after yield')
 ...         i += 1
-...     print 'after while'
+...     print('after while')
 
 ```
 ```
@@ -232,14 +240,14 @@ StopIteration
 ```
 --
 ```
->>> g2.next()
+>>> next(g2)
 enter g with  2
 0
 
 ```
 --
 ```
->>> g2.next()
+>>> next(g2)
 after yield
 1
 
@@ -252,7 +260,7 @@ after yield
 after while
 Traceback (most recent call last):
   File "gen.py", line 42, in <module>
-    print g2.next()
+    print(g2.next())
 StopIteration
 
 ```
@@ -261,7 +269,7 @@ StopIteration
 
 ```
 >>> for  i in g(5):
-...     print i,
+...     print(i, end=" ")
 enter g with  5
 0 after yield
 1 after yield
@@ -283,8 +291,8 @@ after while
 ...         yield a
 ...         a, b = b, a + b
 >>> for i in fib(5):
-...     print i,
-1 2 3
+...     print(i, end=" ")
+1 2 3 
 
 ```
 
@@ -295,8 +303,9 @@ It is always possible to convert a generator to a list
 
 
 ```
->>> print list(fib(100))
+>>> print(list(fib(100)))
 [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+
 ```
 
 ---
